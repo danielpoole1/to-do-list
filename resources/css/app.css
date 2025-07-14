@@ -1,0 +1,13 @@
+body {
+    background-color: #f1f1f1;
+    font-family: 'Lato', sans-serif;
+}
+
+.task-button {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    text-align: center;
+    line-height: 28px;
+    font-size: 0.8rem;
+}
