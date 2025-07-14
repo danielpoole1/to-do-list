@@ -4,10 +4,7 @@ body {
 }
 
 .task-button {
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    text-align: center;
-    line-height: 28px;
+    padding: 0.2rem 0.5rem;
     font-size: 0.8rem;
+    font-weight: bold;
 }

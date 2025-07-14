@@ -15,6 +15,15 @@
     @vite('resources/css/app.css')
 </head>
 
+{{--
+
+Future features/improvements:
+Incorporate React to make this have a SPA experience, reducing the need for page refreshes each time we interact.
+Prevent duplicate tasks being added
+Add pagination to the table of tasks
+
+--}}
+
 <body>
     <div class="container px-3 px-sm-4">
         <header>
@@ -24,7 +33,8 @@
         </header>
 
         <main class="row justify-content-between gx-5 my-5">
-            <form class="col-12 col-lg-4 pb-5" action="" method="POST">
+            <form class="col-12 col-lg-4 pb-5" action="{{ route('tasks.store') }}" method="POST">
+                @csrf
                 <input class="form-control mb-3" type="text" name="task_name" placeholder="Insert task name">
                 <button type="submit" class="btn btn-primary w-100">Add</button>
             </form>
@@ -39,26 +49,36 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Example task</td>
-                                <td>
-                                    <div class="row justify-content-start">
-                                        <div class="btn btn-success task-button me-1">&#10003;</div>
-                                        <div class="btn btn-danger task-button">&#10005;</div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Example task</td>
-                                <td>
-                                    <div class="row justify-content-start">
-                                        <div class="btn btn-success task-button me-1">&#10003;</div>
-                                        <div class="btn btn-danger task-button">&#10005;</div>
-                                    </div>
-                                </td>
-                            </tr>
+                            @forelse ($tasks as $task)
+                                <tr>
+                                    <td>{{ $task->id }}</td>
+                                    <td class="{{ $task->completed ? 'text-decoration-line-through' : '' }}">
+                                        {{ $task->name }}</td>
+                                    <td>
+                                        @if (!$task->completed)
+                                            <div class="d-flex">
+                                                <form action="{{ route('tasks.update', $task) }}" method="POST"
+                                                    class="me-1">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button class="btn btn-success task-button"
+                                                        title="Mark complete">&#10003;</button>
+                                                </form>
+                                                <form action="{{ route('tasks.destroy', $task) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger task-button"
+                                                        title="Delete task">&#10005;</button>
+                                                </form>
+                                            </div>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3">No tasks yet.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -66,7 +86,7 @@
         </main>
 
         <footer class="mt-5">
-            <div class="py-5 text-center text-secondary">Copyright &copy; {{ date('Y') }} All Rights Reserverd</div>
+            <div class="py-5 text-center text-secondary">Copyright &copy; {{ date('Y') }} All Rights Reserved</div>
         </footer>
     </div>
 </body>
