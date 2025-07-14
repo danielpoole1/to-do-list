@@ -17,6 +17,9 @@ return new class extends Migration {
              * Task priority/sorting capability
              * Description for longer notes
              * Task due_date if a task has a deadline
+             * Allow for soft deleting if we want history/recovery options after an item has been removed
+             * Task archiving
+             * Task reminders
              */
 
             $table->id();
